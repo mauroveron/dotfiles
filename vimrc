@@ -1,0 +1,378 @@
+set nocompatible
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-jdaddy'
+Plugin 'tpope/vim-commentary'
+Plugin 'kien/ctrlp.vim'
+Plugin 'JazzCore/ctrlp-cmatcher'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/nerdtree'
+Plugin 'SirVer/ultisnips'
+Plugin 'bling/vim-airline'
+Plugin 'fatih/vim-go'
+" Commented out because breaks ctrlp-funky
+" https://github.com/tacahiroy/ctrlp-funky/issues/85
+"Plugin 'airblade/vim-gitgutter'
+Plugin 'jwalton512/vim-blade'
+Plugin 'godlygeek/tabular'
+Plugin 'mattn/emmet-vim'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'rking/ag.vim'
+Plugin 'mattn/webapi-vim'
+Plugin 'mattn/gist-vim'
+Plugin 'tobyS/Vmustache'
+Plugin 'tobyS/pdv'
+Plugin 'vim-scripts/taglist.vim'
+Plugin 'vim-scripts/Mark--Karkat'
+Plugin 'pangloss/vim-javascript'
+Plugin 'bumaociyuan/vim-swift'
+Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'spf13/vim-autoclose'
+Plugin 'martinda/Jenkinsfile-vim-syntax'
+Plugin 'Glench/Vim-Jinja2-Syntax'
+
+" color schemes
+Plugin 'flazz/vim-colorschemes'
+
+call vundle#end()
+
+syntax on
+set nu
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+" This fixes small delay on terminal when using capital O
+set ttimeoutlen=50
+
+" general editor options {{{
+let mapleader=','
+set modeline
+set noswapfile
+
+set statusline=%<%2*%f%h%1*%m%2*%r%h%w%y\ %*%{&ff}\ %=\ %{fugitive#statusline()}\ col:%c%V\ asc:%B\ pos:%o\ lin:%l\,%L\ %P
+set laststatus=2
+
+set pastetoggle=<F3>
+if has('clipboard')
+    if has('unnamedplus')  " When possible use + register for copy-paste
+        set clipboard=unnamed,unnamedplus
+    else         " On mac and Windows, use * register for copy-paste
+        set clipboard=unnamed
+    endif
+endif
+
+set hidden
+
+set foldmethod=marker
+set foldlevel=99
+set encoding=utf-8
+set diffopt+=vertical
+
+" search
+set ignorecase
+set smartcase
+set incsearch
+set hls
+set gdefault     "default to globl search & replace
+
+set wildmode=longest,list
+set showmatch
+set showcmd
+set shortmess=at
+
+set scrolloff=3
+
+set wildignore=*.o,*.obj,*.swp,*.bak,*.pyc,*~,build,cache,*/sites/default/files,tmp,*.class,*.egg-info,__pycache__
+"set wildignore+=*/vendor/**
+set wildignore+=*/node_modules/**
+
+
+" Use Perl's regex on searches
+nnoremap / /\v
+vnoremap / /\v
+
+set nowrap "do not wrap by default
+" move to the next editor line for wrapped lines
+nnoremap j gj
+nnoremap k gk
+
+filetype plugin indent on
+" fix for vim setting ft=modula2 on *.md files
+au BufNewFile,BufReadPost *.md setl ft=markdown tw=80
+"}}}
+
+" look and feel {{{
+"let g:solarized_termcolors=256
+"set t_Co=256
+colorscheme flattr
+set background=light
+
+" Allow to trigger background
+function! ToggleBG()
+    let s:tbg = &background
+    " Inversion
+    if s:tbg == "dark"
+        set background=light
+    else
+        set background=dark
+    endif
+endfunction
+noremap <leader>bg :call ToggleBG()<CR>
+
+set cursorline
+
+""set listchars=tab:▸\ ,eol:¬,trail:·
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+"
+"set nonu
+map <leader>b :set nu!<CR>
+set title " show filename in titlebar / terminal
+" }}}
+
+" general editing tweaks {{{
+set backspace=indent,eol,start        " allow backspacing over autoindent, linke breaks and start of insert
+set nowrap
+
+set autoindent
+
+" default indentation is two spaces
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+" }
+
+" auto-completion {{{
+set completeopt=menuone,preview
+" }}}
+
+" helpful leader shortcuts {{{
+map <leader>q :q<cr>
+map <leader>d :bd<cr>
+map <leader>ca :1,300bd<cr>
+
+map <leader>f :NERDTree<cr>
+map <leader><space> :noh<cr>
+map <leader>l :set list!<cr>
+map <leader>o :TagbarToggle<cr>
+
+map <leader>s :%:<C-R><C-W>:
+vmap <leader>s :%s:<C-R><C-W>:
+
+" from vimcasts.org/e/14
+" edit file taking the path to the current active buffer into account.
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+" }}}
+
+" other mappings {{{
+" use Q to format paragraph
+vmap Q gq
+nmap Q gqap
+" }}}
+
+set foldenable
+set foldmethod=marker
+" Code folding options
+nmap <leader>f0 :set foldlevel=0<CR>
+nmap <leader>f1 :set foldlevel=1<CR>
+nmap <leader>f2 :set foldlevel=2<CR>
+nmap <leader>f3 :set foldlevel=3<CR>
+nmap <leader>f4 :set foldlevel=4<CR>
+nmap <leader>f5 :set foldlevel=5<CR>
+nmap <leader>f6 :set foldlevel=6<CR>
+nmap <leader>f7 :set foldlevel=7<CR>
+nmap <leader>f8 :set foldlevel=8<CR>
+nmap <leader>f9 :set foldlevel=9<CR>
+
+nnoremap Y y$
+
+" Adjust viewports to the same size
+map <Leader>= <C-w>=
+
+" Find merge conflict markers
+map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+
+"autocmd vimenter * if !argc() | NERDTree | endif
+
+autocmd BufNewFile,BufRead,BufEnter TODO.md setf todo
+
+" Resize splits when the window is resized
+au VimResized * :wincmd =
+
+" Cursorline {{{
+" Only show cursorline in the current window and in normal mode.
+
+augroup cline
+    au!
+    au WinLeave,InsertEnter * set nocursorline
+    au WinEnter,InsertLeave * set cursorline
+augroup END
+
+" }}}
+
+" Don't try to highlight lines longer than 800 characters.
+set synmaxcol=800
+
+" Trailing whitespace {{{
+" Only shown when not in insert mode so I don't go insane.
+
+augroup trailing
+  au!
+  au InsertEnter * :set listchars-=trail:⌴
+augroup END
+" }}}
+
+" Fuck you, help key.
+noremap  <F1> <nop>
+inoremap <F1> <nop>
+
+" Clean trailing whitespace
+nnoremap <leader>w mz:%s/\s\+$//<cr>:let @/=''<cr>`z
+
+" Marks and Quotes
+noremap ' `
+
+" Select (charwise) the contents of the current line, excluding indentation.
+" Great for pasting Python lines into REPLs.
+nnoremap vv ^vg_
+
+" Sudo to write
+cnoremap w!! w !sudo tee % >/dev/null
+
+" Don't move on *
+"nnoremap * *<c-o>
+
+" Easy buffer navigation
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+
+noremap <leader>v <C-w>v
+noremap <leader>t :tabnew<CR>
+
+" Keep search matches in the middle of the window.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Same when jumping around
+nnoremap g; g;zz
+nnoremap g, g,zz
+nnoremap <c-o> <c-o>zz
+
+" Re-select last pasted text
+nnoremap gp `[v`]
+
+set tags=./tags;/,~/.vimtags
+
+nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+
+set lazyredraw
+set ttyfast
+
+" More natural split behavior
+"set splitbelow
+set splitright
+
+if exists('$TMUX')
+  function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+    let previous_winnr = winnr()
+    silent! execute "wincmd " . a:wincmd
+    if previous_winnr == winnr()
+      call system("tmux select-pane -" . a:tmuxdir)
+      redraw!
+    endif
+  endfunction
+
+  let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+  let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+  let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
+
+  nnoremap <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+  nnoremap <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+  nnoremap <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+  nnoremap <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+else
+  map <C-h> <C-w>h
+  map <C-j> <C-w>j
+  map <C-k> <C-w>k
+  map <C-l> <C-w>l
+endif
+
+map <S-H> gT
+map <S-L> gt
+
+" Tabular.vim leader mappings
+nmap <leader>a= :Tabularize /=<CR>
+vmap <leader>a= :Tabularize /=<CR>
+nmap <leader>a: :Tabularize /:\zs<CR>
+vmap <leader>a: :Tabularize /:\zs<CR>
+
+set relativenumber
+
+" CtrlP configuration
+let g:ctrlp_buftag_ctags_bin = 'ctags'
+let g:ctrlp_extensions = ['funky']
+let g:ctrlp_match_func = { 'match': 'matcher#cmatch' }
+let g:ctrlp_buftag_types = {
+\ 'php'     : '--PHP-kinds=cf',
+\ }
+
+nmap <C-e> :CtrlPFunky<CR>
+
+let g:UltiSnipsEditSplit = 'vertical'
+
+let g:phpfmt_psr2 = 1
+let g:phpfmt_on_save = 0
+let g:phpfmt_passes_list = 'OrderAndRemoveUseClauses,AlignEquals,AlignDoubleArrow,AlignGroupDoubleArrow'
+
+""" taglist.vim config
+let g:Tlist_Exit_OnlyWindow = 1
+let g:Tlist_Sort_Type = "order"
+let g:Tlist_Use_Right_Window = 1
+let g:Tlist_WinWidth = 50
+let g:Tlist_Show_One_File = 1
+let g:Tlist_GainFocus_On_ToggleOpen = 1
+
+nmap <F2> :TlistToggle<CR>
+
+nmap <F8> :call PhpFmtFixFile()<CR>
+
+nmap <F4> :Gst<CR>
+
+:imap jj <Esc>
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_flake8_args = "--ignore=E501"
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+" " better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+augroup autosourcing
+    autocmd!
+    autocmd BufWritePost .vimrc source %
+augroup END
+
+" vim:fdm=marker:

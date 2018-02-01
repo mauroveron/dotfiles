@@ -37,9 +37,9 @@ alias gsu='git stash -u'
 alias gsp='git stash pop'
 alias gbc='git branch --merged | grep -v "\*" | grep -v master | grep -v dev | grep -v develop | xargs -n 1 git branch -d'
 
-gpu() {
-  git push origin `git branch | grep '^*' | cut -d ' ' -f 2`
-}
+#gpu() {
+#  git push origin `git branch | grep '^*' | cut -d ' ' -f 2`
+#}
 
 vs() {
   if [ $# -gt 0 ]; then

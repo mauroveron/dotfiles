@@ -354,7 +354,7 @@ nmap <F8> :call PhpFmtFixFile()<CR>
 
 nmap <F4> :Gst<CR>
 
-:imap jj <Esc>
+imap jj <Esc>
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1

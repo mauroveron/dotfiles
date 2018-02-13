@@ -40,6 +40,7 @@ Plugin 'spf13/vim-autoclose'
 Plugin 'martinda/Jenkinsfile-vim-syntax'
 Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'hashivim/vim-terraform'
+Plugin 'posva/vim-vue'
 
 " color schemes
 Plugin 'flazz/vim-colorschemes'

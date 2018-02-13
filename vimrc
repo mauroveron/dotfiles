@@ -164,7 +164,11 @@ map <leader>q :q<cr>
 map <leader>d :bd<cr>
 map <leader>ca :1,300bd<cr>
 
+"" NERDTree mappings {{{
 map <leader>f :NERDTree<cr>
+map <leader>a :NERDTreeFind<cr>
+"" }} NERDTree mappings
+
 map <leader><space> :noh<cr>
 map <leader>l :set list!<cr>
 map <leader>o :TagbarToggle<cr>

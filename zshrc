@@ -83,3 +83,5 @@ eval "$(pyenv init -)"
 export GOPATH=$HOME/code/go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin:$HOME/code/go/bin
 
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"

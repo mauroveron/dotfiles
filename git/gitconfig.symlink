@@ -1,3 +1,5 @@
+[include]
+   path = ~/.gitconfig.local
 [color]
    ui = auto
 [color "branch"]
@@ -13,7 +15,6 @@
    added = yellow
    changed = green
    untracked = cyan
-
 [alias]
   co = checkout
   br = branch
@@ -26,20 +27,10 @@
   standup = !git lg --since yesterday --author `git config user.email`
   pull = pull --rebase
   outgoing = log @{u}.. --oneline
-  switch = !legit switch \"$@\"
-  branches = !legit branches
-  sprout = !legit sprout \"$@\"
-  unpublish = !legit unpublish \"$@\"
-  harvest = !legit harvest \"$@\"
-  sync = !legit sync \"$@\"
-  publish = !legit publish \"$@\"
-  graft = !legit graft \"$@\"
-[user]
-    name = Mauro Veron
-    email = mauroveron@gmail.com
 [github]
     user = mauroveron
 [core]
-    editor = /usr/local/bin/vim
+   excludesfile = ~/.gitignore
+   editor = /usr/bin/vim
 [push]
     default = simple

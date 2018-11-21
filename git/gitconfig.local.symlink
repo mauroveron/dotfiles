@@ -1,0 +1,5 @@
+[user]
+        name = Mauro Veron
+        email = mauroveron@gmail.com
+[credential]
+helper = osxkeychain

@@ -116,7 +116,7 @@ au BufNewFile,BufReadPost *.md setl ft=markdown tw=80
 " look and feel {{{
 "let g:solarized_termcolors=256
 "set t_Co=256
-colorscheme flattr
+colorscheme Tomorrow
 set background=light
 
 " Allow to trigger background

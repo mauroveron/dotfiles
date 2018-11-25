@@ -27,6 +27,7 @@ cask 'spotify'
 cask 'sizeup'
 cask 'fantastical'
 cask 'dropbox'
+cask 'vagrant'
 
 
 # fonts

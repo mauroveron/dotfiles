@@ -7,6 +7,7 @@ tap 'caskroom/fonts'
 brew 'ack'
 brew 'wget'
 brew 'tmux'
+brew 'vim'
 
 # apps
 cask 'slack'

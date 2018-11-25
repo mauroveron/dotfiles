@@ -8,6 +8,7 @@ brew 'ack'
 brew 'wget'
 brew 'tmux'
 brew 'vim'
+brew 'mas'
 
 # apps
 cask 'slack'

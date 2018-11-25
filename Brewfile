@@ -21,7 +21,6 @@ cask 'daisydisk'
 cask 'whatsapp'
 cask 'dash'
 cask 'sketch'
-cask 'vlc'
 cask 'skype'
 cask 'postman'
 cask 'sequel-pro'
@@ -30,6 +29,7 @@ cask 'sizeup'
 cask 'fantastical'
 cask 'dropbox'
 cask 'vagrant'
+cask 'docker'
 
 
 # fonts

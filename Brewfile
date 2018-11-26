@@ -30,7 +30,7 @@ cask 'fantastical'
 cask 'dropbox'
 cask 'vagrant'
 cask 'docker'
-
+cask 'alfred'
 
 # fonts
 cask 'font-source-code-pro'

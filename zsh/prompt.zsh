@@ -20,12 +20,27 @@ git_dirty() {
   fi
 }
 
+git_email() {
+  if $(! git status -s &> /dev/null)
+  then
+    echo ""
+  else
+    local email=$(git config user.email)
+    if [[ $email == "" ]]
+    then
+      echo "[no-user]"
+    else
+      echo "[%{$fg_bold[red]%}$email%{$reset_color%}]"
+    fi
+  fi
+}
+
 directory_name() {
   echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
 }
 
 set_prompt () {
-  export PROMPT="$(directory_name) $(git_dirty) $ "
+  export PROMPT="$(directory_name) $(git_dirty) $(git_email) $ "
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }
 

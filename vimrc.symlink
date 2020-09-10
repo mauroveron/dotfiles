@@ -1,18 +1,12 @@
 set nocompatible
 filetype off
 
-" set the runtime path to include Vundle and initialize
-" set rtp+=~/.vim/bundle/Vundle.vim
-" call vundle#begin()
 call plug#begin('~/.local/share/nvim/plugged/')
 
 Plug 'VundleVim/Vundle.vim'
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jparise/vim-graphql'
-
-Plug 'Shougo/deoplete.nvim'
-let g:deoplete#enable_at_startup = 1
 
 " Search
 " Plug 'rking/ag.vim'
@@ -41,7 +35,7 @@ command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
 nnoremap <leader>b :Buffers<CR>
 
 Plug 'majutsushi/tagbar'
-nmap <leader>m :TagbarToggle<CR>
+map <leader>o :TagbarToggle<cr>
 let g:tagbar_compact = 1
 let g:tagbar_indent = 1
 
@@ -52,7 +46,6 @@ Plug 'tpope/vim-jdaddy'
 Plug 'tpope/vim-commentary'
 Plug 'altercation/vim-colors-solarized'
 Plug 'scrooloose/nerdtree'
-" Plug 'SirVer/ultisnips'
 Plug 'bling/vim-airline'
 Plug 'fatih/vim-go'
 Plug 'airblade/vim-gitgutter'
@@ -63,12 +56,10 @@ Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
 Plug 'tobyS/Vmustache'
 Plug 'tobyS/pdv'
-Plug 'vim-scripts/taglist.vim'
 Plug 'vim-scripts/Mark--Karkat'
 Plug 'pangloss/vim-javascript'
 Plug 'bumaociyuan/vim-swift'
 Plug 'ervandew/supertab'
-"Plug 'Valloric/YouCompleteMe'
 Plug 'spf13/vim-autoclose'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'Glench/Vim-Jinja2-Syntax'
@@ -91,13 +82,12 @@ let g:vim_markdown_autowrite = 1
 " color schemes
 Plug 'flazz/vim-colorschemes'
 
-" call vundle#end()
 call plug#end()
 
 syntax on
 set nu
 
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
 
 " This fixes small delay on terminal when using capital O
@@ -215,11 +205,11 @@ map <leader>ca :1,300bd<cr>
 map <leader>f :NERDTree<cr>
 map <leader>a :NERDTreeFind<cr>
 let NERDTreeIgnore = ['\.pyc$', 'venv', '__pycache__']
+let NERDTreeQuitOnOpen=1
 "" }} NERDTree mappings
 
 map <leader><space> :noh<cr>
 map <leader>l :set list!<cr>
-map <leader>o :TagbarToggle<cr>
 
 map <leader>s :%:<C-R><C-W>:
 vmap <leader>s :%s:<C-R><C-W>:

@@ -199,7 +199,7 @@ map <leader>ca :1,300bd<cr>
 
 "" NERDTree mappings {{{
 map <leader>f :NERDTree<cr>
-map <leader>a :NERDTreeFind<cr>
+map <leader>x :NERDTreeFind<cr>
 let NERDTreeIgnore = ['\.pyc$', 'venv', '__pycache__']
 let NERDTreeQuitOnOpen=1
 "" }} NERDTree mappings

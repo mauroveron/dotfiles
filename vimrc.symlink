@@ -3,8 +3,6 @@ filetype off
 
 call plug#begin('~/.local/share/nvim/plugged/')
 
-Plug 'VundleVim/Vundle.vim'
-
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jparise/vim-graphql'
 
@@ -13,32 +11,7 @@ Plug 'jparise/vim-graphql'
 Plug 'mhinz/vim-grepper'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-
-" {{{
-map <C-p> :FZF<enter>
-let g:fzf_tags_command = 'ctags -R'
-" open fzf filtering ctags on the current directory
-" nnoremap <leader>g :call fzf#vim#tags(expand('<cword>'), {'options': '--exact --select-1 --exit-0'})<CR>
-" }}}
-
-" Grepper
-nnoremap <leader>g :Grepper -tool rg<cr>
-nnoremap <leader>G :Grepper -tool rg -buffers<cr>
-let g:grepper = {}
-let g:grepper.tools = ['rg', 'ag', 'git']
-let g:grepper.highlight = 1
-let g:grepper.simple_prompt = 1
-let g:grepper.prompt_mapping_tool = '<leader>g'
-command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
-
-" zfz
-nnoremap <leader>b :Buffers<CR>
-
 Plug 'majutsushi/tagbar'
-map <leader>o :TagbarToggle<cr>
-let g:tagbar_compact = 1
-let g:tagbar_indent = 1
-
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -65,10 +38,37 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'hashivim/vim-terraform'
 Plug 'posva/vim-vue'
-
 Plug 'tpope/vim-obsession'
-
 Plug 'plasticboy/vim-markdown'
+Plug 'flazz/vim-colorschemes'
+
+call plug#end()
+
+" {{{
+map <C-p> :FZF<enter>
+let g:fzf_tags_command = 'ctags -R'
+" open fzf filtering ctags on the current directory
+" nnoremap <leader>g :call fzf#vim#tags(expand('<cword>'), {'options': '--exact --select-1 --exit-0'})<CR>
+" }}}
+
+" Grepper
+nnoremap <leader>g :Grepper -tool rg<cr>
+nnoremap <leader>G :Grepper -tool rg -buffers<cr>
+let g:grepper = {}
+let g:grepper.tools = ['rg', 'ag', 'git']
+let g:grepper.highlight = 1
+let g:grepper.simple_prompt = 1
+let g:grepper.prompt_mapping_tool = '<leader>g'
+command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
+
+" zfz
+nnoremap <leader>b :Buffers<CR>
+
+" tagbar
+map <leader>o :TagbarToggle<cr>
+let g:tagbar_compact = 1
+let g:tagbar_indent = 1
+
 " {{{
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_new_list_item_indent = 0
@@ -80,27 +80,22 @@ let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_autowrite = 1
 " }}}
 " color schemes
-Plug 'flazz/vim-colorschemes'
-
-call plug#end()
-
-syntax on
-set nu
 
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
 
 " This fixes small delay on terminal when using capital O
-set ttimeoutlen=50
 
-" general editor options {{{
+" ====================================
+" general editor options
+" ====================================
+syntax on
+set nu
 let mapleader=','
+set ttimeoutlen=50
 set modeline
 set noswapfile
-
-set statusline=%<%2*%f%h%1*%m%2*%r%h%w%y\ %*%{&ff}\ %=\ %{fugitive#statusline()}\ col:%c%V\ asc:%B\ pos:%o\ lin:%l\,%L\ %P
 set laststatus=2
-
 set pastetoggle=<F3>
 if has('clipboard')
     if has('unnamedplus')  " When possible use + register for copy-paste
@@ -111,7 +106,6 @@ if has('clipboard')
 endif
 
 set hidden
-
 set foldmethod=marker
 set foldlevel=99
 set encoding=utf-8
@@ -128,6 +122,8 @@ set wildmode=longest,list
 set showmatch
 set showcmd
 set shortmess=at
+
+set synmaxcol=800  " don't try to highlight lines longer than 800 characters
 
 set scrolloff=3
 
@@ -253,9 +249,6 @@ augroup cline
 augroup END
 
 " }}}
-
-" Don't try to highlight lines longer than 800 characters.
-set synmaxcol=800
 
 " Trailing whitespace {{{
 " Only shown when not in insert mode so I don't go insane.

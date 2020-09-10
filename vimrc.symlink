@@ -2,64 +2,82 @@ set nocompatible
 filetype off
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
+call plug#begin('~/.local/share/nvim/plugged/')
 
-Plugin 'VundleVim/Vundle.vim'
+Plug 'VundleVim/Vundle.vim'
 
-Plugin 'editorconfig/editorconfig-vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'jparise/vim-graphql'
 
-Plugin 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim'
 let g:deoplete#enable_at_startup = 1
 
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+" Search
+" Plug 'rking/ag.vim'
+Plug 'mhinz/vim-grepper'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
 " {{{
 map <C-p> :FZF<enter>
 let g:fzf_tags_command = 'ctags -R'
 " open fzf filtering ctags on the current directory
-nnoremap <leader>g :call fzf#vim#tags(expand('<cword>'), {'options': '--exact --select-1 --exit-0'})<CR>
+" nnoremap <leader>g :call fzf#vim#tags(expand('<cword>'), {'options': '--exact --select-1 --exit-0'})<CR>
 " }}}
 
-Plugin 'majutsushi/tagbar'
-nmap \l :TagbarToggle<CR>
+" Grepper
+nnoremap <leader>g :Grepper -tool rg<cr>
+nnoremap <leader>G :Grepper -tool rg -buffers<cr>
+let g:grepper = {}
+let g:grepper.tools = ['rg', 'ag', 'git']
+let g:grepper.highlight = 1
+let g:grepper.simple_prompt = 1
+let g:grepper.prompt_mapping_tool = '<leader>g'
+command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
+
+" zfz
+nnoremap <leader>b :Buffers<CR>
+
+Plug 'majutsushi/tagbar'
+nmap <leader>m :TagbarToggle<CR>
 let g:tagbar_compact = 1
 let g:tagbar_indent = 1
 
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-jdaddy'
-Plugin 'tpope/vim-commentary'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'scrooloose/nerdtree'
-" Plugin 'SirVer/ultisnips'
-Plugin 'bling/vim-airline'
-Plugin 'fatih/vim-go'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'jwalton512/vim-blade'
-Plugin 'godlygeek/tabular'
-Plugin 'mattn/emmet-vim'
-Plugin 'rking/ag.vim'
-Plugin 'mattn/webapi-vim'
-Plugin 'mattn/gist-vim'
-Plugin 'tobyS/Vmustache'
-Plugin 'tobyS/pdv'
-Plugin 'vim-scripts/taglist.vim'
-Plugin 'vim-scripts/Mark--Karkat'
-Plugin 'pangloss/vim-javascript'
-Plugin 'bumaociyuan/vim-swift'
-Plugin 'ervandew/supertab'
-"Plugin 'Valloric/YouCompleteMe'
-Plugin 'spf13/vim-autoclose'
-Plugin 'martinda/Jenkinsfile-vim-syntax'
-Plugin 'Glench/Vim-Jinja2-Syntax'
-Plugin 'hashivim/vim-terraform'
-Plugin 'posva/vim-vue'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-jdaddy'
+Plug 'tpope/vim-commentary'
+Plug 'altercation/vim-colors-solarized'
+Plug 'scrooloose/nerdtree'
+" Plug 'SirVer/ultisnips'
+Plug 'bling/vim-airline'
+Plug 'fatih/vim-go'
+Plug 'airblade/vim-gitgutter'
+Plug 'jwalton512/vim-blade'
+Plug 'godlygeek/tabular'
+Plug 'mattn/emmet-vim'
+Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
+Plug 'tobyS/Vmustache'
+Plug 'tobyS/pdv'
+Plug 'vim-scripts/taglist.vim'
+Plug 'vim-scripts/Mark--Karkat'
+Plug 'pangloss/vim-javascript'
+Plug 'bumaociyuan/vim-swift'
+Plug 'ervandew/supertab'
+"Plug 'Valloric/YouCompleteMe'
+Plug 'spf13/vim-autoclose'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'hashivim/vim-terraform'
+Plug 'posva/vim-vue'
 
-Plugin 'tpope/vim-obsession'
+Plug 'tpope/vim-obsession'
 
-Plugin 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 " {{{
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_new_list_item_indent = 0
@@ -71,9 +89,10 @@ let g:vim_markdown_strikethrough = 1
 let g:vim_markdown_autowrite = 1
 " }}}
 " color schemes
-Plugin 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 
-call vundle#end()
+" call vundle#end()
+call plug#end()
 
 syntax on
 set nu
@@ -144,8 +163,8 @@ au BufNewFile,BufReadPost *.md setl ft=markdown tw=80
 " look and feel {{{
 "let g:solarized_termcolors=256
 "set t_Co=256
-colorscheme Tomorrow
-set background=light
+colorscheme gruvbox
+set background=dark
 
 " Allow to trigger background
 function! ToggleBG()
@@ -157,7 +176,7 @@ function! ToggleBG()
         set background=dark
     endif
 endfunction
-noremap <leader>bg :call ToggleBG()<CR>
+" noremap <leader>bg :call ToggleBG()<CR>
 
 set cursorline
 
@@ -166,7 +185,7 @@ set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 "
 "set nonu
-map <leader>b :set nu!<CR>
+"map <leader>b :set nu!<CR>
 set title " show filename in titlebar / terminal
 " }}}
 
@@ -195,7 +214,7 @@ map <leader>ca :1,300bd<cr>
 "" NERDTree mappings {{{
 map <leader>f :NERDTree<cr>
 map <leader>a :NERDTreeFind<cr>
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', 'venv', '__pycache__']
 "" }} NERDTree mappings
 
 map <leader><space> :noh<cr>
@@ -405,9 +424,14 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
+" URL encode/decode selection
+vnoremap <leader>en :!python -c 'import sys,urllib;print urllib.quote(sys.stdin.read().strip())'<cr>
+vnoremap <leader>de :!python -c 'import sys,urllib;print urllib.unquote(sys.stdin.read().strip())'<cr>
+
 augroup autosourcing
     autocmd!
     autocmd BufWritePost .vimrc source %
 augroup END
 
 " vim:fdm=marker:
+

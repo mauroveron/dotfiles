@@ -107,7 +107,7 @@ set wildignore+=*/vendor/**
 set wildignore+=*/node_modules/**
 
 set cursorline
-set cursorcolumn
+" set cursorcolumn
 
 
 " Use Perl's regex on searches
@@ -146,8 +146,10 @@ set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic white
 " look and feel {{{
      let g:solarized_termcolors=256
      set t_Co=256
-     colorscheme monokai-phoenix
-     set background=dark
+     "colorscheme monokai-phoenix
+     "set background=dark
+     colorscheme Tomorrow
+     set background=light
 
      " Allow to trigger background
      function! ToggleBG()
@@ -282,14 +284,6 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-" LSP config
-lua << EOF
-require'lspconfig'.pyright.setup{}
-require'lspconfig'.elixirls.setup{
-    cmd = { "/Users/mauro/.local/elixir-ls/release/language_server.sh" };
-}
-EOF
-
 lua <<EOF
   -- Setup nvim-cmp.
   local cmp = require'cmp'
@@ -299,9 +293,6 @@ lua <<EOF
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
         vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
       end,
     },
     mapping = {
@@ -350,12 +341,20 @@ lua <<EOF
   require('lspconfig')['pyright'].setup {
     capabilities = capabilities
   }
-  require('lspconfig')['elixirls'].setup {
-    capabilities = capabilities
-  }
   require('lspconfig')['tsserver'].setup {
     capabilities = capabilities
   }
+  local elixirls_path = vim.fn.expand("~/.local/elixir-ls/release/language_server.sh")
+  require'lspconfig'.elixirls.setup({
+      cmd = {elixirls_path},
+      capabilities = capabilities,
+      settings = {
+          elixirLS = {
+              dialyzerEnabled = false,
+              fetchDeps = false
+          }
+      }
+  })
 EOF
 
 " autocomplete with nvim-cmp
@@ -407,6 +406,23 @@ EOF
 "   }
 " end
 " CMPEOF
+
+" Code editing using LSP
+lua <<CODEEDIT
+    local function map(mode, lhs, rhs, opts)
+      local options = {noremap = true}
+      if opts then options = vim.tbl_extend('force', options, opts) end
+      vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    end
+    map('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')
+    map('n', 'gh', ':lua vim.lsp.buf.hover()<CR>')
+    map('n', 'ga', ':Telescope lsp_code_actions<CR>')
+    map('n', 'gA', ':Telescope lsp_range_code_actions<CR>')
+    map('n', 'gD', ':lua vim.lsp.buf.implementation()<CR>')
+    map('n', '<c-k>', ':lua vim.lsp.buf.signature_help()<CR>')
+    map('n', 'gr', ':lua vim.lsp.buf.references()<CR>')
+    map('n', 'gR', ':lua vim.lsp.buf.rename()<CR>')
+CODEEDIT
 
 endif
 

@@ -1,0 +1,412 @@
+syntax on
+set nocompatible
+filetype off
+
+call plug#begin('~/.local/share/nvim/plugged/')
+" Plugins {{{
+
+    " essential plugins
+    Plug 'editorconfig/editorconfig-vim'
+    " eye candy
+    Plug 'flazz/vim-colorschemes'
+    Plug 'bling/vim-airline'
+    " markdown
+    Plug 'plasticboy/vim-markdown'
+    " git support
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+
+    " language support
+    Plug 'elixir-editors/vim-elixir'
+    Plug 'fatih/vim-go'
+    Plug 'jparise/vim-graphql'
+    Plug 'pearofducks/ansible-vim'
+    Plug 'cespare/vim-toml'
+
+    " coding aids
+    Plug 'tpope/vim-commentary'
+    Plug 'mattn/emmet-vim'
+
+    " Completion
+
+    " Telescope (file finding / grepping)
+    if has("nvim")
+        Plug 'nvim-lua/plenary.nvim'
+        Plug 'nvim-telescope/telescope.nvim'
+        " better code highliting
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        Plug 'neovim/nvim-lspconfig'
+
+        " Auto complete
+        " For vsnip users.
+        Plug 'hrsh7th/cmp-vsnip'
+        Plug 'hrsh7th/vim-vsnip'
+        Plug 'hrsh7th/cmp-buffer'
+        Plug 'hrsh7th/cmp-nvim-lsp'
+        Plug 'hrsh7th/nvim-cmp'
+        Plug 'hrsh7th/cmp-path'
+        Plug 'hrsh7th/cmp-cmdline'
+
+    endif
+
+    " Navigation
+    Plug 'scrooloose/nerdtree'
+
+    " eye candy
+    Plug 'ryanoasis/vim-devicons'
+    " color schemes
+    " Plug 'NLKNguyen/papercolor-theme'
+" }}}
+call plug#end()
+
+" general editor options {{{
+" These don't require any plugins
+set nu
+let mapleader=','
+set ttimeoutlen=50
+set modeline
+set noswapfile
+set laststatus=2
+set relativenumber
+set pastetoggle=<F3>
+if has('clipboard')
+    if has('unnamedplus')  " When possible use + register for copy-paste
+        set clipboard=unnamed,unnamedplus
+    else         " On mac and Windows, use * register for copy-paste
+        set clipboard=unnamed
+    endif
+endif
+
+set hidden
+set foldmethod=marker
+set foldlevel=99
+set encoding=utf-8
+
+if has("nvim")
+    set diffopt+=vertical
+endif
+
+" search
+set ignorecase
+set smartcase
+set incsearch
+set hls
+set gdefault     "default to globl search & replace
+
+set wildmode=longest,list
+set showmatch
+set showcmd
+set shortmess=at
+
+set synmaxcol=800  " don't try to highlight lines longer than 800 characters
+
+set scrolloff=3
+
+set wildignore=*.o,*.obj,*.swp,*.bak,*.pyc,*~,build,cache,*/sites/default/files,tmp,*.class,*.egg-info,__pycache__,
+set wildignore+=*/vendor/**
+set wildignore+=*/node_modules/**
+
+set cursorline
+set cursorcolumn
+
+
+" Use Perl's regex on searches
+nnoremap / /\v
+vnoremap / /\v
+
+""set listchars=tab:▸\ ,eol:¬,trail:·
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+"map <leader>b :set nu!<CR>
+    set title " show filename in titlebar / terminal
+
+    " general editing tweaks {{{
+    set backspace=indent,eol,start        " allow backspacing over autoindent, linke breaks and start of insert
+    set nowrap
+
+    set autoindent
+
+    " default indentation is two spaces
+    set tabstop=4
+    set softtabstop=4
+    set shiftwidth=4
+    set expandtab
+
+    " auto-completion {{{
+    set completeopt=menu,menuone,noselect
+    " }}}
+
+    " disable help key
+    noremap  <F1> <nop>
+    inoremap <F1> <nop>
+
+    set splitright
+" }}}
+
+" look and feel {{{
+     let g:solarized_termcolors=256
+     set t_Co=256
+     colorscheme monokai-phoenix
+     set background=dark
+
+     " Allow to trigger background
+     function! ToggleBG()
+         let s:tbg = &background
+         " Inversion
+         if s:tbg == "dark"
+             set background=light
+         else
+             set background=dark
+         endif
+     endfunction
+     " noremap <leader>bg :call ToggleBG()<CR>
+" }}}
+
+" leader mappings {{{
+    map <leader>q :q<cr>
+    map <leader>Q :1,300bd<cr>
+    map <leader>d :bd<cr>
+
+    " Adjust viewports to the same size
+    map <Leader>= <C-w>=
+
+    " Find merge conflict markers
+    map <leader>c /\v^[<\|=>]{7}( .*\|$)<CR>
+
+    " Clean trailing whitespace
+    nnoremap <leader>w mz:%s/\s\+$//<cr>:let @/=''<cr>`z
+
+    " vertical split
+    noremap <leader>v <C-w>v
+    " create a new tab
+    noremap <leader>t :tabnew<CR>
+
+    " Telescope shortcuts
+    if has("nvim")
+        nnoremap <leader>sf <cmd>lua require('telescope.builtin').find_files()<cr>
+        nnoremap <leader>sg <cmd>lua require('telescope.builtin').live_grep()<cr>
+        nnoremap <leader>sb <cmd>lua require('telescope.builtin').buffers()<cr>
+        nnoremap <leader>sh <cmd>lua require('telescope.builtin').help_tags()<cr>
+        nnoremap <leader>sd <cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>
+        nnoremap <leader>sw <cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>
+    endif
+
+    " Adjust viewports to the same size
+    map <Leader>= <C-w>=
+
+    "" NERDTree mappings
+    map <leader>f :NERDTree<cr>
+    map <leader>x :NERDTreeFind<cr>
+    let NERDTreeIgnore = ['\.pyc$', 'venv', '__pycache__']
+    let NERDTreeQuitOnOpen=0
+
+    " URL encode/decode selection
+    vnoremap <leader>en :!python -c 'import sys,urllib;print urllib.quote(sys.stdin.read().strip())'<cr>
+    vnoremap <leader>de :!python -c 'import sys,urllib;print urllib.unquote(sys.stdin.read().strip())'<cr>
+    " prettify JSON on current buffer
+    nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+
+    map <leader><space> :noh<cr>
+    map <leader>l :set list!<cr>
+" }}}
+
+map <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+
+" editing aids {{{
+    " use Q to format paragraph
+    vmap Q gq
+    nmap Q gqap
+
+    " Re-select last pasted text
+    nnoremap gp `[v`]
+
+    " Keep search matches in the middle of the window.
+    nnoremap n nzzzv
+    nnoremap N Nzzzv
+
+    " Same when jumping around
+    nnoremap g; g;zz
+    nnoremap g, g,zz
+    nnoremap <c-o> <c-o>zz
+" }}}
+
+" TMUX integration {{{
+    if exists('$TMUX')
+      function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+        let previous_winnr = winnr()
+        silent! execute "wincmd " . a:wincmd
+        if previous_winnr == winnr()
+          call system("tmux select-pane -" . a:tmuxdir)
+          redraw!
+        endif
+      endfunction
+
+      let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+      let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+      let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
+
+      nnoremap <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+      nnoremap <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+      nnoremap <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+      nnoremap <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+    else
+      map <C-h> <C-w>h
+      map <C-j> <C-w>j
+      map <C-k> <C-w>k
+      map <C-l> <C-w>l
+    endif
+
+    map <S-H> gT
+    map <S-L> gt
+
+" }}}
+
+
+if has("nvim")
+
+" vim-treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    custom_captures = {
+      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+      ["foo.bar"] = "Identifier",
+    },
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+" LSP config
+lua << EOF
+require'lspconfig'.pyright.setup{}
+require'lspconfig'.elixirls.setup{
+    cmd = { "/Users/mauro/.local/elixir-ls/release/language_server.sh" };
+}
+EOF
+
+lua <<EOF
+  -- Setup nvim-cmp.
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      end,
+    },
+    mapping = {
+      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      -- Accept currently selected item. If none selected, `select` first item.
+      -- Set `select` to `false` to only confirm explicitly selected items.
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  -- Setup lspconfig.
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig')['pyright'].setup {
+    capabilities = capabilities
+  }
+  require('lspconfig')['elixirls'].setup {
+    capabilities = capabilities
+  }
+  require('lspconfig')['tsserver'].setup {
+    capabilities = capabilities
+  }
+EOF
+
+" autocomplete with nvim-cmp
+" lua << CMPEOF
+" local nvim_lsp = require('lspconfig')
+"
+" -- Use an on_attach function to only map the following keys
+" -- after the language server attaches to the current buffer
+" local on_attach = function(client, bufnr)
+"   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+"   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+"
+"   -- Enable completion triggered by <c-x><c-o>
+"   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+"
+"   -- Mappings.
+"   local opts = { noremap=true, silent=true }
+"
+"   -- See `:help vim.lsp.*` for documentation on any of the below functions
+"   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+"   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+"   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+"   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+"   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+"   buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+"   buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+"   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+"   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+"   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+"   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+"   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+"   buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+"   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+"   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+"   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+"   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+"
+" end
+"
+" -- Use a loop to conveniently call 'setup' on multiple servers and
+" -- map buffer local keybindings when the language server attaches
+" local servers = { 'pyright', 'tsserver' }
+" for _, lsp in ipairs(servers) do
+"   nvim_lsp[lsp].setup {
+"     on_attach = on_attach,
+"     flags = {
+"       debounce_text_changes = 150,
+"     }
+"   }
+" end
+" CMPEOF
+
+endif
+

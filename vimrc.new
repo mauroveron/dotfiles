@@ -148,8 +148,10 @@ set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic white
      set t_Co=256
      "colorscheme monokai-phoenix
      "set background=dark
-     colorscheme Tomorrow
-     set background=light
+     " colorscheme Tomorrow
+     " set background=light
+     colorscheme desertEx
+     set background=dark
 
      " Allow to trigger background
      function! ToggleBG()
@@ -342,6 +344,7 @@ lua <<EOF
     capabilities = capabilities
   }
   require('lspconfig')['tsserver'].setup {
+    cmd = {vim.fn.expand("~/.asdf/shims/typescript-language-server"), "--stdio"},
     capabilities = capabilities
   }
   local elixirls_path = vim.fn.expand("~/.local/elixir-ls/release/language_server.sh")

@@ -7,6 +7,16 @@
 I use the following plugins:
 - vim-cmp
 
+#### Treesitter grammars
+Use treesitter
+
+```
+TSInstall heex javascript typescript python
+```
+
+Do not install the elixir grammar, it's too slow.
+
+
 
 ## Language servers
 

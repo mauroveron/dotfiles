@@ -32,6 +32,8 @@ set -g status-left '#[fg=green]#H'
 setw -g monitor-activity on
 set -g visual-activity on
 
+set-window-option -g window-status-current-style bg=purple
+
 # navigating trough panes
 unbind h
 unbind j
